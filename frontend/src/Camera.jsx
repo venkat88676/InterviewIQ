@@ -1,22 +1,15 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-class CameraApp extends Component {
-  constructor(props) {
-    super(props);
-    this.videoRef = React.createRef();
-    this.state = {
-      cameraOn: false,
-      audioOn: false,
-    };
-  }
+function CameraApp() {
+  const [cameraOn, setCameraOn] = useState(false);
+  const [audioOn, setAudioOn] = useState(false);
+  const videoRef = useRef(null);
 
-  componentDidMount() {
-    this.initializeCamera();
-  }
+  useEffect(() => {
+    initializeCamera();
+  }, [cameraOn, audioOn]);
 
-  initializeCamera() {
-    const { cameraOn, audioOn } = this.state;
-
+  const initializeCamera = () => {
     const constraints = {
       video: cameraOn,
       audio: audioOn,
@@ -25,51 +18,35 @@ class CameraApp extends Component {
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
-        this.videoRef.current.srcObject = stream;
+        videoRef.current.srcObject = stream;
       })
       .catch((error) => {
-        console.error('Error accessing the camera:', error);
+        console.error("Error accessing the camera:", error);
       });
-  }
-
-  toggleCamera = () => {
-    this.setState(
-      (prevState) => ({ cameraOn: !prevState.cameraOn }),
-      () => {
-        // Reinitialize the camera with updated settings
-        this.initializeCamera();
-      }
-    );
   };
 
-  toggleAudio = () => {
-    this.setState(
-      (prevState) => ({ audioOn: !prevState.audioOn }),
-      () => {
-        // Reinitialize the camera with updated settings
-        this.initializeCamera();
-      }
-    );
+  const toggleCamera = () => {
+    setCameraOn((prevCameraOn) => !prevCameraOn);
   };
 
-  render() {
-    const { cameraOn, audioOn } = this.state;
+  const toggleAudio = () => {
+    setAudioOn((prevAudioOn) => !prevAudioOn);
+  };
 
-    return (
+  return (
+    <div>
+      <h1>Camera App</h1>
       <div>
-        <h1>Camera App</h1>
-        <div>
-          <button onClick={this.toggleCamera}>
-            {cameraOn ? 'Camera Off' : 'Camera On'}
-          </button>
-          <button onClick={this.toggleAudio}>
-            {audioOn ? 'Audio Off' : 'Audio On'}
-          </button>
-        </div>
-        <video ref={this.videoRef} autoPlay playsInline />
+        <button onClick={toggleCamera}>
+          {cameraOn ? "Camera Off" : "Camera On"}
+        </button>
+        <button onClick={toggleAudio}>
+          {audioOn ? "Audio Off" : "Audio On"}
+        </button>
       </div>
-    );
-  }
+      <video ref={videoRef} autoPlay playsInline />
+    </div>
+  );
 }
 
 export default CameraApp;

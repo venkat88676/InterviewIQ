@@ -81,16 +81,25 @@
 }
 #inputCont{
     margin-top: 10px;
+    /* border: solid red; */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 #input{
-    width: 60%;
+    width: 55%;
     height: 90px;
 }
+#buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border:solid red; */
+    height: 40px;
+    width: 35%;
+}
 #sendBtn{
-    width: 10%;
+    /* width: 10%; */
     height: 40px;
 
 }

@@ -1,8 +1,28 @@
 const express = require("express")
+const {openai}=require("../openai")
+
 require("dotenv").config();
-const apiKey=process.env.OPENAI_API_KEY
 
 const mainRoute=express.Router()
+
+mainRoute.post('/getQuestion', async (req, res) => {
+  let {level,topic}=req.body;
+  let promptByUser=`you have to act as a expert of ${topic} and ask one question of level ${level}`
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: promptByUser,
+      max_tokens: 3000
+    });
+
+    const question = response.data.choices[0].text.trim();
+    console.log(question)
+    res.json({ question });
+  } catch (error) {
+    console.error('Error fetching question:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
 
