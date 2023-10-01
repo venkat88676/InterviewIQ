@@ -25,20 +25,14 @@ function App() {
         return res.json();
     })
     .then((data)=>{
-        // let question=JSON.stringify(data);
         console.log(data);
-      //   localStorage.setItem("ques",data.question);
-      //  let div=document.createElement("div");
-      //   div.setAttribute("class","each-div");
-      //   let image=document.createElement("img");
-      //   image.setAttribute("class","logo");
-      //   image.src="https://looka.com/s/139260762"
-      //   let q=document.createElement("p");
-      //   q.setAttribute("class","question");
-      //   q.innerText=data.question;
-
-      //   div.append(q);
-        // output.append(div);
+        let questionScreen=document.getElementById("questionScreen");
+        let questionDiv=document.createElement("div");
+        questionDiv.setAttribute("class","questionDiv");
+        let question=document.createElement("p");
+        question.innerText=data.question;
+        questionDiv.append(question);
+        questionScreen.append(questionDiv)
        
     })
   }
@@ -49,19 +43,19 @@ function App() {
     <div id='mainBody'>
 
       <div id='selectCont' >
-      <select  id="topic" onChange={(e)=>setTopic(e.target.value)}>
-        <option value="">Select Topic</option>
-        <option value="react">React</option>
-        <option value="node">Node</option>
-        <option value="java">Java</option>
-        <option value="javascript">JavaScript</option>      
-      </select>
-      <select  id="level" onChange={(e)=>setLevel(e.target.value)}>
-        <option value="">Select Level</option>
-        <option value="beginner">Beginner</option>
-        <option value="intermediate">Intermediate</option>
-        <option value="advance">Advance</option>
-      </select>
+        <select  id="topic" onChange={(e)=>setTopic(e.target.value)}>
+          <option value="">Select Topic</option>
+          <option value="react">React</option>
+          <option value="node">Node</option>
+          <option value="java">Java</option>
+          <option value="javascript">JavaScript</option>      
+        </select>
+        <select  id="level" onChange={(e)=>setLevel(e.target.value)}>
+          <option value="">Select Level</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advance">Advance</option>
+        </select>
       </div>
 
       <div id='start'>

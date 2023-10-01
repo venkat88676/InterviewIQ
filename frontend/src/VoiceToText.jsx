@@ -3,8 +3,29 @@ import React, { useState, useEffect } from "react";
 function VoiceToText() {
   const [transcription, setTranscription] = useState("");
   const [listening, setListening] = useState(false);
+  const [question, setQuestion] =useState("");
+  const [answer, setAnswer] = useState("");
 
   const recognition = new window.webkitSpeechRecognition();
+
+  function submitAnswer(){
+    // let newPrompt=`Ask one more question on previous topic od same level`
+    let payload={transcription}
+    fetch(`http://localhost:8800/main/submitAnswer`,{
+      method:"POST",
+      headers:{
+        "content-type":"application/json"
+      },
+      body:payload
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+
+    })
+    .catch((error)=>{
+      console.log(error)
+    })    
+  }
 
   useEffect(() => {
     recognition.continuous = true;
@@ -45,7 +66,7 @@ function VoiceToText() {
         />
 
       <div id="buttons">
-        <button id="sendBtn">Send</button>
+        <button id="sendBtn" onClick={submitAnswer}>Send</button>
         <button onClick={startListening} disabled={listening}>
           {listening ? "Listening..." : "Start Listening"}
         </button>
