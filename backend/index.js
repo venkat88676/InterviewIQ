@@ -3,8 +3,6 @@ const app= express();
 const cors=require("cors")
 // const fetch = require("node-fetch");
 const mainRoute=require("./routes/main.route");
-const {openai}=require("./openai")
-
 
 require("dotenv").config();
 app.use(express.json());
