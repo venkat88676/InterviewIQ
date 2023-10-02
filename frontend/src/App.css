@@ -77,11 +77,10 @@
 }
 #cameraApp{
     width: 350px;
-    border: solid red;
+    /* border: solid red; */
 }
 #inputCont{
     margin-top: 10px;
-    /* border: solid red; */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
