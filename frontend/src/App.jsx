@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import CameraApp from './Camera';
+// import CameraApp from './Camera';
 
 import Navbar from './Navbar';
 import VoiceToText from './VoiceToText';
@@ -9,12 +9,12 @@ import VoiceToText from './VoiceToText';
 function App() {
   const [topic, setTopic] = useState("node")
   const [level, setLevel] = useState("beginner")
-
+  const [question, setQuestion] = useState("")
   function getQuestion(){
 
     let payload={level,topic}
-    console.log(payload)
-    fetch("http://localhost:8800/main/getQuestion",{
+    // console.log(payload)
+    fetch("http://localhost:8800/getQuestion",{
       method:"POST",
       headers:{
         "content-type":"application/json"
@@ -26,6 +26,7 @@ function App() {
     })
     .then((data)=>{
         console.log(data);
+        setQuestion(data.question)
         let questionScreen=document.getElementById("questionScreen");
         let questionDiv=document.createElement("div");
         questionDiv.setAttribute("class","questionDiv");
@@ -35,6 +36,10 @@ function App() {
         questionScreen.append(questionDiv)
        
     })
+  }
+
+  function getFeedback(feedback){
+    console.log("from parent",feedback)
   }
   
   return (
@@ -73,7 +78,8 @@ function App() {
 
       <div >
        
-         <VoiceToText></VoiceToText>
+         <VoiceToText question={question} getFeedback={getFeedback}/>
+
       </div>
      
      

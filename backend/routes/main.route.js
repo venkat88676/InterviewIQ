@@ -27,8 +27,17 @@ mainRoute.post('/getQuestion', async (req, res) => {
 
 
 mainRoute.post("/submitAnswer",async(req,res)=>{
-  let {transcription}=req.body;
-  let promptByUser=`you have to act as a expert of ${topic} and ask one question of level ${level}`
+  let {question,answer}=req.body;
+  let promptByUser=`    
+      Provide feedback on the following response to the question: "${question}" and assign a score out of 10. Also, include the correct answer and a reference.
+
+      Example:
+      Response: "${answer}"
+      Score: 2/10
+      Feedback: You need to improve
+      Correct Answer: The correct term is...
+      Reference: (Add reference here)
+  `
   try {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -36,9 +45,9 @@ mainRoute.post("/submitAnswer",async(req,res)=>{
       max_tokens: 3000
     });
 
-    const question = response.data.choices[0].text.trim();
-    console.log(question)
-    res.json({ question });
+    const feedback = response.data.choices[0].text.trim();
+    console.log(feedback)
+    res.json({feedback });
   } catch (error) {
     console.error('Error fetching question:', error);
     res.status(500).json({ error: 'Server error' });
