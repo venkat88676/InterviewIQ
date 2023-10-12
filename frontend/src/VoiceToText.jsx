@@ -23,8 +23,9 @@ function VoiceToText({question,getFeedback}) {
     })
     .then((res)=>res.json())
     .then((data)=>{
-      getFeedback(data)
       console.log("from child",data)
+      getFeedback(data)
+     
     })
     .catch((error)=>{
       console.log(error)

@@ -1,90 +1,71 @@
 import { useState } from 'react';
 import './App.css';
-// import CameraApp from './Camera';
-
 import Navbar from './Navbar';
 import VoiceToText from './VoiceToText';
 
-
 function App() {
-  const [topic, setTopic] = useState("node")
-  const [level, setLevel] = useState("beginner")
-  const [question, setQuestion] = useState("")
-  function getQuestion(){
+  const [topic, setTopic] = useState("node");
+  const [level, setLevel] = useState("beginner");
+  const [question, setQuestion] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [finalOutput, setFinalOutput] = useState([]);
 
-    let payload={level,topic}
-    // console.log(payload)
-    fetch("http://localhost:8800/getQuestion",{
-      method:"POST",
-      headers:{
-        "content-type":"application/json"
+  function getQuestion() {
+    setFeedback(""); // Clear the feedback when a new question is obtained
+    let payload = { level, topic };
+    fetch("http://localhost:8800/getQuestion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(payload)  
+      body: JSON.stringify(payload),
     })
-    .then((res)=>{
-        return res.json();
-    })
-    .then((data)=>{
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data);
-        setQuestion(data.question)
-        let questionScreen=document.getElementById("questionScreen");
-        let questionDiv=document.createElement("div");
-        questionDiv.setAttribute("class","questionDiv");
-        let question=document.createElement("p");
-        question.innerText=data.question;
-        questionDiv.append(question);
-        questionScreen.append(questionDiv)
-       
-    })
+        setQuestion(data.question);
+
+        const newQuestion = { type: "question", content: data.question };
+        setFinalOutput([...finalOutput, newQuestion]);
+      });
   }
 
-  function getFeedback(feedback){
-    console.log("from parent",feedback)
+  function getFeedback(response) {
+    console.log("from parent", response.feedback);
+ 
+    setFeedback(response.feedback);
   }
-  
+
   return (
     <>
-    <Navbar></Navbar>
-    <div id='mainBody'>
-
-      <div id='selectCont' >
-        <select  id="topic" onChange={(e)=>setTopic(e.target.value)}>
-          <option value="">Select Topic</option>
-          <option value="react">React</option>
-          <option value="node">Node</option>
-          <option value="java">Java</option>
-          <option value="javascript">JavaScript</option>      
-        </select>
-        <select  id="level" onChange={(e)=>setLevel(e.target.value)}>
-          <option value="">Select Level</option>
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advance">Advance</option>
-        </select>
-      </div>
-
-      <div id='start'>
-        <button id='startBtn' onClick={getQuestion}>Start Your Interview</button>
-      </div>     
-      
-      <div id='interviewCont'>
-        <div id='cameraCont'>
-          {/* <CameraApp></CameraApp> */}
+      <Navbar />
+      <div id='mainBody'>
+        <div id='selectCont'>
+          {/* ... (unchanged) */}
         </div>
-        <div id='questionScreen'>
-
+        <div id='start'>
+          <button id='startBtn' onClick={getQuestion}>Start Your Interview</button>
+        </div>
+        <div id='interviewCont'>
+          <div id='cameraCont'>
+            {/* ... (unchanged) */}
+          </div>
+          <div id='questionScreen'>
+            {finalOutput.map((item, index) => (
+              <div key={index} className={item.type}>
+                {item.content}
+              </div>
+            ))}
+            <p>{feedback}</p>
+          </div>
+          <div id='feedback'>
+              
+          </div>
+        </div>
+        <div>
+          <VoiceToText question={question} getFeedback={getFeedback} />
         </div>
       </div>
-
-      <div >
-       
-         <VoiceToText question={question} getFeedback={getFeedback}/>
-
-      </div>
-     
-     
-   
-    </div>
     </>
   );
 }

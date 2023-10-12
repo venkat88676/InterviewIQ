@@ -28,15 +28,14 @@ mainRoute.post('/getQuestion', async (req, res) => {
 
 mainRoute.post("/submitAnswer",async(req,res)=>{
   let {question,answer}=req.body;
+  console.log("answer",answer)
   let promptByUser=`    
-      Provide feedback on the following response to the question: "${question}" and assign a score out of 10. Also, include the correct answer and a reference.
+      Provide feedback on the following response to the question: "${question}", answer: "${answer}"and assign a score out of 10. Also, give the correct answer.
 
-      Example:
-      Response: "${answer}"
-      Score: 2/10
-      Feedback: You need to improve
-      Correct Answer: The correct term is...
-      Reference: (Add reference here)
+      give result like this:      
+      Score: 2/10,\n
+      Feedback: You need to improve,\n
+      Correct Answer: The correct term is...,
   `
   try {
     const response = await openai.createCompletion({
