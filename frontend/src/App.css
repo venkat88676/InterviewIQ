@@ -34,7 +34,7 @@
     font-size: large;
     border-radius: 8px;
     border: none;
-    border-bottom:  solid rgb(53, 227, 53) ;
+    /* border-bottom:  solid rgb(53, 227, 53) ; */
     background-color: rgb(232, 240, 240);
     margin-top: 10px;
 }
