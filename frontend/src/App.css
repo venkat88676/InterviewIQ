@@ -19,7 +19,7 @@
 #navMenu{
     /* color: rgb(53, 227, 53); */
     display: flex;;
-    border: solid red;
+    /* border: solid red; */
     width: 25%;
     justify-content: space-evenly;
     align-items: center;
